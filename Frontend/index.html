@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot UI</title>
+</head>
+<body>
+    <h2>Chat with AI</h2>
+    <div>
+        <textarea id="userInput" rows="4" cols="50" placeholder="Type your message..."></textarea><br>
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <div id="responseBox" style="margin-top: 20px;"></div>
+
+    <script>
+        function sendMessage() {
+            const userInput = document.getElementById("userInput").value;
+
+            fetch("http://localhost:8080/api/chat", { // Update this path if your Spring Boot controller differs
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ input: userInput })
+            })
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("responseBox").innerText = "AI: " + data;
+            })
+            .catch(error => {
+                document.getElementById("responseBox").innerText = "Error: " + error;
+            });
+        }
+    </script>
+</body>
+</html>
